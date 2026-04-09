@@ -1,0 +1,5 @@
+# RPLidar (Silicon Labs CP210x)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="rplidar", MODE="0666"
+
+# Portenta H7 (Arduino Envie M7)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="025b", SYMLINK+="portenta", MODE="0666", ENV{ID_MM_DEVICE_IGNORE}="1"
