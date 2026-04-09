@@ -8,7 +8,7 @@ SBC 없이 micro-ROS WiFi로 `/scan` 토픽을 publish하고, 노트북에서 SL
 ```
 [Portenta H7]                    WiFi (2.4GHz UDP)           [노트북]
   micro-ROS  ──────────────────────────────────────>  micro-ROS agent
-  /scan (LaserScan, 460pts, 10Hz)                     ROS2 Jazzy
+  /scan (LaserScan, 360pts, 5.5Hz)                     ROS2 Jazzy
                                                       rviz2 / slam_toolbox
 ```
 
@@ -80,12 +80,12 @@ ip -4 addr show | grep "inet " | grep -v "127.0.0.1"
 
 ```bash
 # 1. 컴파일
-arduino-cli compile --fqbn arduino:mbed_portenta:envie_m7 firmware/micro_ros_pub/
+arduino-cli compile --fqbn arduino:mbed_portenta:envie_m7 firmware/m7_main/
 
 # 2. Portenta 리셋 버튼 더블탭 (부트로더 모드 진입, 초록 LED 페이딩)
 
 # 3. 업로드
-arduino-cli upload --fqbn arduino:mbed_portenta:envie_m7 -p /dev/ttyACM0 firmware/micro_ros_pub/
+arduino-cli upload --fqbn arduino:mbed_portenta:envie_m7 -p /dev/ttyACM0 firmware/m7_main/
 ```
 
 ## 실행
@@ -152,7 +152,7 @@ rviz2 설정:
 
 | 토픽 | 타입 | QoS | 주기 | 설명 |
 |------|------|-----|------|------|
-| `/scan` | `sensor_msgs/msg/LaserScan` | reliable | 10Hz | RPLIDAR C1 시뮬레이션 (460pts, 가상 방 4x3m + 원형 장애물) |
+| `/scan` | `sensor_msgs/msg/LaserScan` | reliable | ~5.5Hz | RPLidar C1 실측 (360pts) |
 
 ## 기술 노트
 
@@ -186,7 +186,23 @@ RMW_UXRCE_MAX_OUTPUT_BUFFER_SIZE = 512 * 4 = 2048
 ```
 surribot/
 ├── README.md
-└── firmware/
-    └── micro_ros_pub/
-        └── micro_ros_pub.ino    # Portenta H7 펌웨어
+├── .gitignore
+├── firmware/
+│   ├── m7_main/                  # M7 코어: micro-ROS WiFi + LiDAR
+│   │   ├── m7_main.ino
+│   │   ├── config.h
+│   │   ├── lidar.h / lidar_rplidar.cpp / lidar_sim.cpp
+│   │   ├── ipc_msgs.h
+│   │   ├── wifi_config.h.example
+│   │   └── wifi_config.h         # (gitignored) 실제 크레덴셜
+│   ├── m4_motor/                 # M4 코어: 모터 제어
+│   │   ├── m4_motor.ino
+│   │   └── ipc_msgs.h
+│   ├── shared/                   # 코어 간 공유 메시지 정의
+│   │   └── ipc_msgs.h
+│   ├── test_rplidar/             # RPLidar 직접 UART 테스트
+│   └── test_rplidar_lds/         # RPLidar LDS 라이브러리 테스트
+└── tools/
+    ├── serial_bridge.py          # 시리얼 브릿지
+    └── 99-surribot.rules         # udev 룰
 ```
