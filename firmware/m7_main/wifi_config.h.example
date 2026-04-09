@@ -1,0 +1,8 @@
+// WiFi & Agent configuration template
+// Copy to wifi_config.h and fill in your credentials.
+// wifi_config.h is gitignored — your secrets stay local.
+
+#define WIFI_SSID     "your_2.4ghz_ssid"
+#define WIFI_PASS     "your_password"
+#define AGENT_IP      "192.168.0.27"
+#define AGENT_PORT    8888

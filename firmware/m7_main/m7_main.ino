@@ -17,11 +17,12 @@
 #include <Arduino_PortentaBreakout.h>
 #include <LDS_RPLIDAR_C1.h>
 
-// --- WiFi & Agent ---
-#define WIFI_SSID     "your_2.4ghz_ssid"
-#define WIFI_PASS     "your_password"
-#define AGENT_IP      "192.168.0.27"
-#define AGENT_PORT    8888
+// --- WiFi & Agent (wifi_config.h) ---
+#include "wifi_config.h"
+
+#if !defined(WIFI_SSID) || !defined(WIFI_PASS) || !defined(AGENT_IP) || !defined(AGENT_PORT)
+  #error "wifi_config.h is missing or incomplete. Copy wifi_config.h.example to wifi_config.h and fill in your credentials."
+#endif
 
 // --- LiDAR ---
 #define SCAN_NUM_READINGS  360

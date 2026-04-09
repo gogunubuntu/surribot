@@ -64,13 +64,11 @@ mv ~/microros_agent_build/build ~/.microros_agent_ws/build
 
 ## 펌웨어 설정
 
-`firmware/micro_ros_pub/micro_ros_pub.ino` 상단의 WiFi/Agent 설정을 자신의 환경에 맞게 수정:
+`firmware/m7_main/wifi_config.h.example`을 복사하여 `wifi_config.h`를 만들고 자신의 환경에 맞게 수정:
 
-```cpp
-#define WIFI_SSID     "your_2.4ghz_ssid"   // 반드시 2.4GHz
-#define WIFI_PASS     "your_password"
-#define AGENT_IP      "192.168.0.27"        // 노트북 IP
-#define AGENT_PORT    8888
+```bash
+cp firmware/m7_main/wifi_config.h.example firmware/m7_main/wifi_config.h
+# wifi_config.h를 편집하여 WiFi SSID/비밀번호, Agent IP 입력
 ```
 
 노트북 IP 확인:
